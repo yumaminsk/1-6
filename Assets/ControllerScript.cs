@@ -24,6 +24,9 @@ public class ControllerScript : MonoBehaviour
     private bool isSpawn = true;
     private bool isDeath = false;
     private bool isDamage = false;
+    private int current_pool_element = 0;
+
+    public GameObject bolletposition;
 
 
     public CharacterController Controller
@@ -35,20 +38,16 @@ public class ControllerScript : MonoBehaviour
         get { return characterCamera = characterCamera ?? FindObjectOfType<Camera>(); }
     }
     public Animator CharacterAnimator { get { return animator = animator ?? GetComponent<Animator>(); } }
-
-    // Update is called once per frame
     void Start()
     {
         spawnStart();
-        
-
     }
     void Update()
     {
         
         if (isSpawn == false && isDeath == false && isDamage == false)
         {
-            Damage();
+            //Damage();
             Death();
             float vertical = Input.GetAxis("Vertical");
             float horizontal = Input.GetAxis("Horizontal");
@@ -73,10 +72,11 @@ public class ControllerScript : MonoBehaviour
             Quaternion currentRotation = Controller.transform.rotation;
             Quaternion targetRotation = Quaternion.Euler(0.0f, rotationAngle, 0.0f);
             Controller.transform.rotation = Quaternion.Lerp(currentRotation, targetRotation, rotationSpeed);
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                Fire();
+            }
         }
-        
-
-
     }
 
     private void Death()
@@ -137,15 +137,26 @@ public class ControllerScript : MonoBehaviour
         yield return new WaitForSeconds(2);
         isSpawn = false; 
     }
-    void Damage()
+    void Fire()
+    {
+        GameObject[] pool_mass = tester.Instance.poolofBullets; 
+        Rigidbody B_rigidboyd = pool_mass[current_pool_element].GetComponent<Rigidbody>();
+        pool_mass[current_pool_element].SetActive(true);
+
+
+            pool_mass[current_pool_element].transform.position = bolletposition.transform.position;
+            pool_mass[current_pool_element].transform.rotation = bolletposition.transform.rotation;
+            B_rigidboyd.AddForce(pool_mass[current_pool_element].transform.position * 500f); // было Ellenpoint.transform.position
+            current_pool_element++;
+            tester.Instance.Test();
+            if (current_pool_element >= 10) current_pool_element = 0;
+    }
+  /*  void Damage()
     {
         if (Input.GetButtonDown ("Fire1"))
         {
-            
-            print("fire");
             animator.SetTrigger("Dam");
-            animator.SetFloat("Damage", UnityEngine.Random.Range(1f, 4f));
-
+            animator.SetInteger("Damage", UnityEngine.Random.Range(1, 4));
         }
     }
     void DamageBegin()
@@ -157,6 +168,6 @@ public class ControllerScript : MonoBehaviour
     {
         isDamage = false;
         print(isDamage);
-    }
+    }*/
 }
 

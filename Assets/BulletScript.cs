@@ -1,0 +1,37 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[RequireComponent(typeof(Rigidbody))]
+
+public class BulletScript : MonoBehaviour
+{
+    private float lifetime = 5;
+    public delegate void OnDeathDelegate(float BulletPosx, float BulletPosy, float BulletPosz);
+    public static event OnDeathDelegate OnDeathEvent;
+    private Rigidbody B_rigidboyd; 
+
+    void Start()
+    {
+        B_rigidboyd = GetComponent<Rigidbody>();
+       // B_rigidboyd.AddForce(transform.forward * 500f);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        lifetime -= Time.deltaTime;
+        if(lifetime <=0) {
+            gameObject.SetActive(false);
+        }
+    }
+    private void OnCollisionEnter(Collision other) 
+    {
+        float BulletPosx = transform.position.x;
+        float BulletPosy = transform.position.y;
+        float BulletPosz = transform.position.z;
+        OnDeathEvent?.Invoke(BulletPosx, BulletPosy, BulletPosz);
+
+        gameObject.SetActive(false);
+    }
+}
