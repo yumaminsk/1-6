@@ -34,7 +34,7 @@ public class tester : Singleton<tester>
     }
     public GameObject GetBullet()
    {
-       for (i = 0; i < pool_count; i++)
+        for (i = 0; i < pool_count; i++)
         {
             if (!pool_mass[i].activeInHierarchy)
             {

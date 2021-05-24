@@ -13,15 +13,16 @@ public class BulletScript : MonoBehaviour
 
     void Start()
     {
+        lifetime = 5;
         B_rigidboyd = GetComponent<Rigidbody>();
-       // B_rigidboyd.AddForce(transform.forward * 500f);
     }
 
     // Update is called once per frame
     void Update()
     {
         lifetime -= Time.deltaTime;
-        if(lifetime <=0) {
+        if(lifetime <=0) 
+        {
             gameObject.SetActive(false);
         }
     }

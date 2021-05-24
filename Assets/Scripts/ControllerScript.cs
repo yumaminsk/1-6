@@ -24,7 +24,6 @@ public class ControllerScript : MonoBehaviour
     private bool isSpawn = true;
     private bool isDeath = false;
     private bool isDamage = false;
-    private int current_pool_element = 0;
 
     public GameObject bulletposition;
 
@@ -139,7 +138,7 @@ public class ControllerScript : MonoBehaviour
     }
     void Fire()
     {
-        GameObject bullet = tester.Instance.GetBullet();
+        GameObject bullet = BulletManager.Instance.GetBullet();
         Rigidbody b_rigidbody = bullet.GetComponent<Rigidbody>();
         Debug.Log(bullet.name);
         bullet.SetActive(true);
@@ -147,18 +146,6 @@ public class ControllerScript : MonoBehaviour
         bullet.transform.position = bulletposition.transform.position;
         bullet.transform.rotation = bulletposition.transform.rotation;
         b_rigidbody.AddForce(bullet.transform.forward * 100f);
-        /*
-        GameObject[] pool_mass = tester.Instance.poolofBullets; 
-        Rigidbody B_rigidboyd = pool_mass[current_pool_element].GetComponent<Rigidbody>();
-        pool_mass[current_pool_element].SetActive(true);
-
-
-            pool_mass[current_pool_element].transform.position = bolletposition.transform.position;
-            pool_mass[current_pool_element].transform.rotation = bolletposition.transform.rotation;
-            B_rigidboyd.AddForce(pool_mass[current_pool_element].transform.position * 500f); // было Ellenpoint.transform.position
-            current_pool_element++;
-            tester.Instance.GetBullet();
-            if (current_pool_element >= 10) current_pool_element = 0;*/
     }
   /*  void Damage()
     {
