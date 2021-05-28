@@ -13,18 +13,14 @@ public class BulletScript : MonoBehaviour
 
     void Start()
     {
-        lifetime = 5;
+
         B_rigidboyd = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        lifetime -= Time.deltaTime;
-        if(lifetime <=0) 
-        {
-            gameObject.SetActive(false);
-        }
+
     }
     private void OnCollisionEnter(Collision other) 
     {

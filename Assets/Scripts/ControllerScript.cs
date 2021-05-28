@@ -17,7 +17,7 @@ public class ControllerScript : MonoBehaviour
     private float rotationAngle = 0.0f;
     private bool isSpirit = false;
     private float targetAnimationSpeed = 0.0f;
-    
+    private int switchNum = 0;
     private float speedY = 0.0f;
     private float gravity = -9.81f;
     private bool isJumping = false;
@@ -75,6 +75,10 @@ public class ControllerScript : MonoBehaviour
             {
                 Fire();
             }
+            if (Input.GetKeyDown(KeyCode.B))
+            {
+                BulletManager.Instance.SwitchType();
+            }
         }
     }
 
@@ -125,10 +129,7 @@ public class ControllerScript : MonoBehaviour
     }
     void spawnStart()
     {
-        
         StartCoroutine(Spawn());
-       
-
     }
     IEnumerator Spawn()
     {
@@ -147,6 +148,8 @@ public class ControllerScript : MonoBehaviour
         bullet.transform.rotation = bulletposition.transform.rotation;
         b_rigidbody.AddForce(bullet.transform.forward * 100f);
     }
+
+
   /*  void Damage()
     {
         if (Input.GetButtonDown ("Fire1"))
