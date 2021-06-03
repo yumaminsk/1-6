@@ -4,26 +4,27 @@ using UnityEngine;
 
 public class BulletManager : Singleton<BulletManager>
 {
-public enum BulletType { bulletTP, pingpongTP, granateTP }
-public BulletType BulletTP;
-public GameObject prefab;
-public GameObject[] pool_mass;
-public GameObject[] pool_granate;
-public GameObject[] pool_pingpong;
-public GameObject[] pool_switch;
-private Rigidbody B_rigidboyd;
-private int i = 0;
-private int pool_count = 10;
-private int switchNum = 0;
+    public enum BulletType { bulletTP, pingpongTP, granateTP }
+    public BulletType BulletTP;
+    public GameObject prefab;
+    public List<GameObject> pool_mass = new List<GameObject>();
+
+    public List<GameObject> pool_granate = new List<GameObject>();
+    public List<GameObject> pool_pingpong = new List<GameObject>();
+    public List<GameObject> pool_switch;
+    private Rigidbody B_rigidboyd;
+    private int i = 0;
+    private int pool_count = 10;
 
     void Awake()
-{
-    CreatingBulletPool();
-    CreatingGranatePool();
-    CreatingpingpongPool();
+    {
+        CreatingPool(Resources.Load<GameObject>("Bullets/Bullet"), pool_mass);
+        CreatingPool(Resources.Load<GameObject>("Bullets/granate"), pool_granate);
+        CreatingPool(Resources.Load<GameObject>("Bullets/pingpong"), pool_pingpong);
+
         BulletTP = BulletType.bulletTP;
-       
-}
+
+    }
     private void Update()
     {
         switch (BulletTP)
@@ -40,71 +41,47 @@ private int switchNum = 0;
 
         }
     }
-public void SwitchType()
+    
+    private void CreatingPool(GameObject prefab, List<GameObject> pool)
     {
-        int min = 0;
-        int max = 2;
-        switchNum++;
-        if (switchNum >= 3) switchNum = 0;
-        else
+        //pool = new List<GameObject>();
+        for (i = 0; i < pool_count; i++)
         {
-            BulletTP = (BulletType)Mathf.Clamp(switchNum, min, max);
+            GameObject obj = Instantiate(prefab, transform.position, transform.rotation);
+            obj.SetActive(false);
+            pool.Add(obj);
+        }
+    }
+    private List<GameObject> GetPool(BulletType type )
+    {
+        switch (type)
+        {
+            case BulletType.bulletTP:
+                return pool_mass;
+            case BulletType.pingpongTP:
+                return pool_pingpong;
+            case BulletType.granateTP:
+                return pool_granate;
+
+            default:
+                return pool_mass;
         }
     }
 
-private void CreatingBulletPool()
-{    
-    prefab = Resources.Load<GameObject>("Bullets/Bullet");
-    pool_mass = new GameObject[pool_count];
-    for (i = 0; i < pool_count; i++)
-    {
-        pool_mass[i] = Instantiate(prefab, transform.position, transform.rotation);
-        pool_mass[i].SetActive(false);
-        pool_mass[i].transform.SetParent(transform);
-    }
-}
-private void CreatingGranatePool()
-    {
-        prefab = Resources.Load<GameObject>("Bullets/granate");
-        pool_granate = new GameObject[pool_count];
-        for (i = 0; i < pool_count; i++)
-        {
-            pool_granate[i] = Instantiate(prefab, transform.position, transform.rotation);
-            pool_granate[i].SetActive(false);
-            pool_granate[i].transform.SetParent(transform);
-        }
-    }
-private void CreatingpingpongPool()
-    {
-        prefab = Resources.Load<GameObject>("Bullets/pingpong");
-        pool_pingpong = new GameObject[pool_count];
-        for (i = 0; i < pool_count; i++)
-        {
-            pool_pingpong[i] = Instantiate(prefab, transform.position, transform.rotation);
-            pool_pingpong[i].SetActive(false);
-            pool_pingpong[i].transform.SetParent(transform);
-        }
-    }
-public GameObject GetBullet()
+
+public GameObject GetBullet(int w)
 {
-    for (i = 0; i < pool_switch.Length; i++)
+        print(w);
+        List<GameObject> pool1 = GetPool((BulletType)w); // было switchnum
+
+        for (i = 0; i < pool1.Count; i++)
     {
-        if (!pool_switch[i].activeInHierarchy)
+        if (!pool1[i].activeInHierarchy)
         {
-            return pool_switch[i];
+            return pool1[i];
         }
+        if( i > 10) { i = 0; }
     }
     return null;
 }
-    public GameObject Getpingpong()
-    {
-        for (i = 0; i < pool_pingpong.Length; i++)
-        {
-            if (!pool_pingpong[i].activeInHierarchy)
-            {
-                return pool_pingpong[i];
-            }
-        }
-        return null;
-    }
 }

@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class BulletScript : MonoBehaviour
 {
-    private float lifetime = 5;
     public delegate void OnDeathDelegate(float BulletPosx, float BulletPosy, float BulletPosz);
     public static event OnDeathDelegate OnDeathEvent;
     private Rigidbody B_rigidboyd; 

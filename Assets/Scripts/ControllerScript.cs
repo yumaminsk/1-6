@@ -10,14 +10,13 @@ public class ControllerScript : MonoBehaviour
     public float animationBlendSpeed= 0.2f;
     public float sprintSpeed = 7.0f;
     public float jumpSpeed = 7.0f;
-
+    private int switchNum = 0;
     CharacterController controller;
     Camera characterCamera;
     Animator animator;
     private float rotationAngle = 0.0f;
     private bool isSpirit = false;
     private float targetAnimationSpeed = 0.0f;
-    private int switchNum = 0;
     private float speedY = 0.0f;
     private float gravity = -9.81f;
     private bool isJumping = false;
@@ -77,7 +76,7 @@ public class ControllerScript : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.B))
             {
-                BulletManager.Instance.SwitchType();
+                SwitchType();
             }
         }
     }
@@ -139,34 +138,50 @@ public class ControllerScript : MonoBehaviour
     }
     void Fire()
     {
-        GameObject bullet = BulletManager.Instance.GetBullet();
+        //List<GameObject> pool_switch;
+        GameObject bullet = BulletManager.Instance.GetBullet(switchNum);
+        
         Rigidbody b_rigidbody = bullet.GetComponent<Rigidbody>();
         Debug.Log(bullet.name);
         bullet.SetActive(true);
         b_rigidbody.velocity = new Vector3(0, 0, 0);
         bullet.transform.position = bulletposition.transform.position;
         bullet.transform.rotation = bulletposition.transform.rotation;
-        b_rigidbody.AddForce(bullet.transform.forward * 100f);
+        b_rigidbody.AddForce(bullet.transform.forward * 300f);
     }
-
-
-  /*  void Damage()
+    public void SwitchType()
     {
-        if (Input.GetButtonDown ("Fire1"))
+        int min = 0;
+        int max = 2;
+        switchNum++;
+        if (switchNum >= 3)
         {
-            animator.SetTrigger("Dam");
-            animator.SetInteger("Damage", UnityEngine.Random.Range(1, 4));
+            switchNum = 0;
+        }
+        else
+        {
+            Mathf.Clamp(switchNum, min, max);
         }
     }
-    void DamageBegin()
-    {
-        isDamage = true;
-        print(isDamage);
-    }
-    void DamageEnd()
-    {
-        isDamage = false;
-        print(isDamage);
-    }*/
+  
+
+    /*  void Damage()
+      {
+          if (Input.GetButtonDown ("Fire1"))
+          {
+              animator.SetTrigger("Dam");
+              animator.SetInteger("Damage", UnityEngine.Random.Range(1, 4));
+          }
+      }
+      void DamageBegin()
+      {
+          isDamage = true;
+          print(isDamage);
+      }
+      void DamageEnd()
+      {
+          isDamage = false;
+          print(isDamage);
+      }*/
 }
 
