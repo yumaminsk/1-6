@@ -19,8 +19,8 @@ public class BulletManager : Singleton<BulletManager>
     void Awake()
     {
         CreatingPool(Resources.Load<GameObject>("Bullets/Bullet"), pool_mass);
-        CreatingPool(Resources.Load<GameObject>("Bullets/granate"), pool_granate);
-        CreatingPool(Resources.Load<GameObject>("Bullets/pingpong"), pool_pingpong);
+        //CreatingPool(Resources.Load<GameObject>("Bullets/granate"), pool_granate);
+        //CreatingPool(Resources.Load<GameObject>("Bullets/pingpong"), pool_pingpong);
 
         BulletTP = BulletType.bulletTP;
 
@@ -71,7 +71,7 @@ public class BulletManager : Singleton<BulletManager>
 
 public GameObject GetBullet(int w)
 {
-        print(w);
+        
         List<GameObject> pool1 = GetPool((BulletType)w); // было switchnum
 
         for (i = 0; i < pool1.Count; i++)
